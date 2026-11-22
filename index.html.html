@@ -1,0 +1,285 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Çekici Defteri</title>
+<style>
+:root{--bg:#f1f2ee;--card:#fff;--ink:#1d2227;--mut:#6b7279;--line:#dcdfd8;--acc:#f2b705;--accink:#1d2227;--in:#1f7a45;--out:#c0392b;--bar:#1d2227;--bart:#f1f2ee;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg:#14171a;--card:#1e2327;--ink:#eceee9;--mut:#9aa1a7;--line:#2e353b;--in:#4cc07f;--out:#ff7a6b;--bar:#0d0f11}}
+:root[data-theme="dark"]{--bg:#14171a;--card:#1e2327;--ink:#eceee9;--mut:#9aa1a7;--line:#2e353b;--in:#4cc07f;--out:#ff7a6b;--bar:#0d0f11}
+*{box-sizing:border-box}
+html,body{margin:0;background:var(--bg);color:var(--ink);font:16px/1.4 -apple-system,"Helvetica Neue",Arial,sans-serif}
+main{max-width:520px;margin:0 auto;padding:14px 14px 110px}
+.hdr{display:flex;align-items:center;justify-content:space-between;margin-bottom:10px}
+.hdr h1{font-size:20px;margin:0}
+.mon{display:flex;align-items:center;gap:6px}
+.mon button{background:var(--card);border:1px solid var(--line);color:var(--ink);width:36px;height:36px;border-radius:8px;font-size:18px}
+.mon span{min-width:116px;text-align:center;font-weight:600}
+.net{background:var(--bar);color:var(--bart);border-radius:14px;padding:18px;border-left:8px solid var(--acc)}
+.net small{opacity:.75}
+.net .v{font-size:36px;font-weight:700;letter-spacing:-.02em;margin:2px 0 10px}
+.net .row{display:flex;gap:14px}.net .row div{flex:1}.net .row b{display:block;font-size:17px}
+.in{color:var(--in)}.out{color:var(--out)}.net .in{color:#6fe0a0}.net .out{color:#ff9b8f}
+.tabs{display:flex;gap:6px;margin:14px 0 10px}
+.tabs button{flex:1;padding:10px;border-radius:10px;border:1px solid var(--line);background:var(--card);color:var(--ink);font-weight:600;font-size:15px}
+.tabs button.on{background:var(--acc);color:var(--accink);border-color:var(--acc)}
+.card{background:var(--card);border:1px solid var(--line);border-radius:12px;padding:12px 14px;margin-bottom:10px}
+.card h2{font-size:15px;margin:0 0 8px}
+.cat{display:flex;align-items:center;gap:8px;margin:6px 0;font-size:14px}
+.cat .n{width:104px;flex:none}.cat .b{flex:1;height:8px;background:var(--line);border-radius:4px;overflow:hidden}
+.cat .b i{display:block;height:100%;background:var(--out)}.cat .b i.g{background:var(--in)}
+.cat .a{width:84px;text-align:right;flex:none}
+.sub{font-size:12.5px;color:var(--mut);margin:-2px 0 6px 0}
+.kv{display:flex;justify-content:space-between;padding:4px 0;font-size:14px}
+.item{display:flex;justify-content:space-between;gap:10px;padding:11px 0;border-bottom:1px solid var(--line)}
+.item:last-child{border:0}.item .t{font-weight:600}.item .s{font-size:13px;color:var(--mut)}
+.item .r{text-align:right;white-space:nowrap}.item .r b{font-size:16px}
+.tag{display:inline-block;font-size:12px;padding:1px 7px;border-radius:6px;background:var(--acc);color:var(--accink);margin-left:4px;font-weight:600}
+.tag.q{background:var(--line);color:var(--ink)}
+.empty{color:var(--mut);text-align:center;padding:26px 8px}
+.btn{border:0;border-radius:10px;padding:10px 14px;font-weight:600;font-size:15px;background:var(--acc);color:var(--accink)}
+.btn.g{background:var(--card);color:var(--ink);border:1px solid var(--line)}.btn.s{padding:6px 10px;font-size:13px}
+.fab{position:fixed;right:18px;bottom:calc(18px + env(safe-area-inset-bottom,0px));background:var(--acc);color:var(--accink);border:0;border-radius:30px;padding:15px 22px;font-size:17px;font-weight:700;box-shadow:0 4px 14px rgba(0,0,0,.3)}
+.sheet{position:fixed;inset:0;background:rgba(0,0,0,.5);display:none;align-items:flex-end;z-index:5}.sheet.open{display:flex}
+.panel{background:var(--bg);width:100%;max-width:520px;margin:0 auto;border-radius:18px 18px 0 0;padding:16px 16px calc(18px + env(safe-area-inset-bottom,0px));max-height:92%;overflow:auto}
+.seg{display:flex;gap:6px;margin-bottom:12px}
+.seg button{flex:1;padding:12px;border-radius:10px;border:2px solid var(--line);background:var(--card);color:var(--ink);font-weight:700;font-size:16px}
+.seg button.on.i{border-color:var(--in);color:var(--in)}.seg button.on.o{border-color:var(--out);color:var(--out)}
+label{display:block;font-size:13px;color:var(--mut);margin:10px 0 4px}
+input{width:100%;padding:12px;border-radius:10px;border:1px solid var(--line);background:var(--card);color:var(--ink);font-size:17px}
+.two{display:flex;gap:8px}.two>div{flex:1}
+.chips{display:flex;flex-wrap:wrap;gap:6px}
+.chips button{padding:8px 12px;border-radius:18px;border:1px solid var(--line);background:var(--card);color:var(--ink);font-size:14px}
+.chips button.on{background:var(--acc);color:var(--accink);border-color:var(--acc);font-weight:600}
+.acts{display:flex;gap:8px;margin-top:16px}.acts .btn{flex:1}
+textarea{width:100%;height:80px;padding:10px;border-radius:10px;border:1px solid var(--line);background:var(--card);color:var(--ink);font-size:13px}
+.msg{font-size:13px;color:var(--mut);margin-top:6px}
+a{color:var(--ink);font-weight:600}
+.dd{max-height:230px;overflow-y:auto;-webkit-overflow-scrolling:touch;border:1px solid var(--line);border-radius:10px;background:var(--card);margin-top:4px}.ddi{padding:12px;border-bottom:1px solid var(--line);font-size:16px}.ddi:last-child{border:0}.ddi.w{color:var(--mut);font-size:14px;background:var(--bg)}
+.prof{display:flex;justify-content:space-between;align-items:center;gap:10px}.prof .t{font-weight:700;font-size:17px}.prof .s{font-size:13px;color:var(--mut)}
+</style>
+</head>
+<body>
+<main>
+  <div class="hdr"><h1>Çekici Defteri</h1>
+    <div class="mon"><button id="pm" aria-label="Önceki ay">‹</button><span id="ml"></span><button id="nm" aria-label="Sonraki ay">›</button></div></div>
+  <div id="prof"></div>
+  <section class="net"><small>Bu ay net kâr</small><div class="v" id="net">0 ₺</div>
+    <div class="row"><div><small>Gelir</small><b class="in" id="inc">0 ₺</b></div><div><small>Gider</small><b class="out" id="exp">0 ₺</b></div><div><small>Veresiye</small><b id="dbt">0 ₺</b></div></div></section>
+  <div class="tabs"><button data-t="ozet" class="on">Özet</button><button data-t="kayit">Kayıtlar</button><button data-t="veresiye">Veresiye</button></div>
+  <div id="view"></div>
+</main>
+<button class="fab" id="add">+ Ekle</button>
+<datalist id="pl"></datalist>
+
+<div class="sheet" id="sh"><div class="panel">
+  <div class="seg"><button class="i on" data-k="gelir">Gelir</button><button class="o" data-k="gider">Gider</button></div>
+  <div id="f-routew">
+    <div class="two"><div><label>Başlangıç</label><input id="f-from" placeholder="İlçe – mahalle" autocomplete="off"></div>
+    <div><label>Varış</label><input id="f-to" placeholder="İlçe – mahalle" autocomplete="off"></div></div>
+    <div class="two"><div><label>Sokak / adres (başlangıç)</label><input id="f-fa" placeholder="İsteğe bağlı"></div><div><label>Sokak / adres (varış)</label><input id="f-ta" placeholder="İsteğe bağlı"></div></div>
+    <label>Mesafe (km) <span id="kmh" style="font-weight:400"></span></label><input id="f-km" type="number" inputmode="decimal" placeholder="Otomatik hesaplanır">
+    <div class="msg" id="maplink"></div>
+  </div>
+  <label>Tutar (₺) <span id="amh" style="font-weight:400"></span></label><input id="f-amt" type="number" inputmode="decimal" placeholder="0">
+  <div id="f-grpw"><label>Gider sınıfı</label><div class="chips" id="f-grp"></div></div>
+  <label>Kategori</label><div class="chips" id="f-cat"></div>
+  <div id="f-payw"><label>Ödeme şekli</label><div class="chips" id="f-pay"></div><label>Müşteri</label><input id="f-cus" placeholder="Ad veya firma"></div>
+  <div id="f-notew"><label>Plaka / not</label><input id="f-note" placeholder="Örn. 16 ABC 123"></div>
+  <label>Tarih</label><input id="f-date" type="date">
+  <div class="acts"><button class="btn g" id="cx">Vazgeç</button><button class="btn" id="sv">Kaydet</button></div>
+</div></div>
+
+<div class="sheet" id="bk"><div class="panel">
+  <h2 style="margin:0 0 6px">Tarife</h2>
+  <div class="two"><div><label>Açılış ücreti (₺)</label><input id="s-open" type="number" inputmode="decimal"></div><div><label>Km başı ücret (₺)</label><input id="s-km" type="number" inputmode="decimal"></div></div>
+  <div class="msg">Tarife girilirse gelir tutarı mesafeye göre otomatik önerilir; istediğin zaman değiştirebilirsin.</div>
+  <div class="acts"><button class="btn" id="ss">Tarifeyi kaydet</button></div>
+  <h2 style="margin:18px 0 6px">Yedek</h2>
+  <div class="msg">Veriler yalnızca bu telefonda saklanır. Düzenli yedek al.</div>
+  <div class="acts"><button class="btn" id="cp">Yedeği kopyala</button></div>
+  <label>Yedeği geri yükle (yapıştır)</label><textarea id="rs"></textarea>
+  <div class="acts"><button class="btn g" id="bx">Kapat</button><button class="btn" id="rb">Geri yükle</button></div>
+  <div class="msg" id="bm"></div>
+</div></div>
+
+<script>
+const INC=["Çekim","Yol yardım","Taşıma","Kaza çekimi","Sigorta/kurum işi","Diğer"];
+const G={"Araç işletme":["Yakıt","Bakım-onarım","Lastik","Yedek parça","Otoyol-köprü"],"Resmi":["Sigorta","Muayene","Vergi-harç","Trafik cezası"],"Personel":["Maaş","SGK","Yemek-harcırah"],"Muhasebe-ofis":["Muhasebe","Kira","Telefon-internet","Ofis gideri"],"Diğer":["Diğer gider"]};
+const PAY=["Nakit","Havale","Veresiye"];
+// Yaklaşık merkez koordinatları (enlem, boylam). Mesafe kuş uçuşu x 1,35 yol katsayısı ile tahmin edilir.
+const PLACES=[
+["Osmangazi",40.195,29.06],["Nilüfer",40.213,28.935],["Yıldırım",40.19,29.105],["Mudanya",40.375,28.883],["Gemlik",40.431,29.154],["İnegöl",40.08,29.513],["Mustafakemalpaşa",40.035,28.41],["Karacabey",40.215,28.36],["Orhangazi",40.49,29.31],["İznik",40.429,29.72],["Kestel",40.193,29.21],["Gürsu",40.215,29.19],["Orhaneli",39.904,28.99],["Keles",39.917,29.23],["Harmancık",39.683,29.15],["Büyükorhan",39.775,28.897],["Yenişehir",40.263,29.635],
+["Osmangazi – Heykel/Kent Meydanı",40.183,29.067],["Osmangazi – Çekirge",40.2,29.023],["Osmangazi – Soğanlı",40.2,29.04],["Osmangazi – Setbaşı",40.185,29.078],["Osmangazi – Terminal",40.215,29.085],
+["Nilüfer – Görükle",40.223,28.857],["Nilüfer – Özlüce",40.218,28.9],["Nilüfer – Beşevler",40.215,28.96],["Nilüfer – Ataevler",40.205,28.965],["Nilüfer – Balat",40.23,28.96],["Nilüfer – Hasanağa OSB",40.248,28.93],
+["Yıldırım – Emek",40.213,29.087],["Yıldırım – Bursa OSB",40.238,29.138],["Yıldırım – Mollaarap",40.205,29.12],
+["Mudanya – Güzelyalı",40.363,28.9],["Gemlik – Liman",40.443,29.16]];
+const km1=(a,b)=>{const r=Math.PI/180,x=(b[1]-a[1])*r*Math.cos((a[0]+b[0])/2*r),y=(b[0]-a[0])*r;return Math.sqrt(x*x+y*y)*6371};
+const findP=n=>PLACES.find(p=>p[0].toLowerCase()===n.trim().toLowerCase());
+let db=[],ay={open:0,km:0},pf={name:"",veh:"",plate:""},pedit=false,cur=new Date(),tab="ozet",kind="gelir",grp="Araç işletme",cat="",pay="Nakit",editId=null,kmEd=false,amEd=false;
+const $=s=>document.querySelector(s);
+const tl=n=>Math.round(n).toLocaleString("tr-TR")+" ₺";
+const today=()=>{const d=new Date();return new Date(d-d.getTimezoneOffset()*6e4).toISOString().slice(0,10)};
+const mkey=()=>cur.getFullYear()+"-"+String(cur.getMonth()+1).padStart(2,"0");
+const grpOf=c=>Object.keys(G).find(g=>G[g].includes(c))||"Diğer";
+const esc=s=>String(s||"").replace(/[&<>"]/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]));
+const dt=d=>d.split("-").reverse().join(".");
+function load(){try{db=JSON.parse(localStorage.getItem("cekici")||"[]")}catch(e){db=[]}try{ay=JSON.parse(localStorage.getItem("cekici_ayar")||"null")||ay}catch(e){}try{pf=JSON.parse(localStorage.getItem("cekici_profil")||"null")||pf}catch(e){}}
+function save(){try{localStorage.setItem("cekici",JSON.stringify(db));localStorage.setItem("cekici_ayar",JSON.stringify(ay));localStorage.setItem("cekici_profil",JSON.stringify(pf))}catch(e){}}
+const KASA=['Kayar kasa','Vinçli','Platform','Wrecker (ağır)','Çoklu taşıyıcı'];
+const MD={'Ford Transit':'Hafif','Fiat Ducato':'Hafif','Renault Master':'Hafif','Peugeot Boxer':'Hafif','Citroën Jumper':'Hafif','Volkswagen Crafter':'Hafif','Mercedes-Benz Sprinter':'Hafif','Iveco Daily':'Hafif-orta','Isuzu NPR':'Orta','Isuzu NQR':'Orta','Hyundai HD':'Orta','Mitsubishi Fuso Canter':'Orta','BMC Pro':'Orta','MAN TGL':'Orta','DAF LF':'Orta','Ford Trucks Cargo':'Orta-ağır','Mercedes-Benz Atego':'Orta-ağır','MAN TGM':'Orta-ağır','Volvo FL':'Orta-ağır','Mercedes-Benz Actros':'Ağır','MAN TGS':'Ağır','Scania P/G serisi':'Ağır'};
+const DT=[['muayene','Araç muayenesi'],['egzoz','Egzoz emisyon'],['trafik','Trafik sigortası'],['kasko','Kasko'],['yetki','Yetki belgesi'],['src','Sürücü SRC belgesi']];
+let kk='',fromRem=false;
+const dleft=s=>Math.ceil((new Date(s+'T00:00')-new Date(today()+'T00:00'))/864e5);
+const mtv=()=>{const y=new Date().getFullYear();return [y+'-01-31',y+'-07-31',(y+1)+'-01-31'].find(x=>dleft(x)>=0)};
+const badge=n=>n<0?`<span class='tag' style='background:var(--out);color:#fff'>${-n} gün geçti</span>`:`<span class='tag ${n>30?'q':''}' style='${n<=15?'background:var(--out);color:#fff':''}'>${n} gün</span>`;
+const pk=v=>{kk=v;chips($('#p-k'),KASA,kk,pk)};
+function pauto(){const s=MD[$('#p-v').value.trim()];$('#p-auto').textContent=s?`Otomatik: ${s} sınıf · Dizel`:'';if(s&&!kk){kk=s==='Ağır'?'Wrecker (ağır)':'Kayar kasa';chips($('#p-k'),KASA,kk,pk)}}
+function renderProf(){
+ const el=$('#prof'),d=pf.d||{},has=pf.name||pf.veh||pf.plate;
+ if(has&&!pedit){
+  const m=mtv(),rows=DT.filter(x=>d[x[0]]).map(x=>[x[1],d[x[0]],dleft(d[x[0]]),x[0]]);
+  rows.push(['MTV son gün (Ocak/Temmuz)',m,dleft(m),'mtv']);rows.sort((a,b)=>a[2]-b[2]);
+  let bk='';if(pf.km&&pf.next){const k=pf.next-pf.km;bk=`<div class='kv'><span>Sonraki bakıma</span><b class='${k<=1000?'out':''}'>${k<0?Math.abs(k).toLocaleString('tr-TR')+' km geçti':k.toLocaleString('tr-TR')+' km'}</b> <button class='btn g s' data-rn='bakim'>+ Gider</button></div>`}
+  const info=[pf.kasa,MD[pf.veh]?MD[pf.veh]+' sınıf · Dizel':''].filter(Boolean).join(' · ');
+  el.innerHTML=`<div class='card'><div class='prof'><div><div class='t'>${esc(pf.name)}</div><div class='s'>${esc(pf.veh)}${pf.year?' · '+esc(pf.year):''}${pf.plate?' · ':''}<b>${esc(pf.plate)}</b></div>${info?`<div class='s'>${esc(info)}</div>`:''}</div><button class='btn g s' id='pe'>Düzenle</button></div><div style='margin-top:8px'>${rows.map(r=>`<div class='kv'><span>${r[0]}</span><span>${dt(r[1])} ${badge(r[2])} <button class='btn g s' data-rn='${r[3]}'>+ Gider</button></span></div>`).join('')}${bk}</div></div>`;
+  $('#pe').onclick=()=>{pedit=true;renderProf()};
+ }else{
+  el.innerHTML=`<div class='card'><h2>Kişisel ve araç bilgileri</h2><label>İsim</label><input id='p-n' value="${esc(pf.name)}" placeholder='Ad Soyad'><label>Çekici marka / model</label><input id='p-v' value="${esc(pf.veh)}" placeholder='Listeden seç veya yaz' autocomplete='off'><datalist id='vl'>${Object.keys(MD).map(k=>`<option value="${k}">`).join('')}</datalist><div class='msg' id='p-auto'></div><div class='two'><div><label>Model yılı</label><input id='p-y' type='number' inputmode='numeric' value="${esc(pf.year)}"></div><div><label>Plaka</label><input id='p-p' value="${esc(pf.plate)}" placeholder='16 ABC 123'></div></div><label>Kasa tipi</label><div class='chips' id='p-k'></div><h2 style='margin:16px 0 0'>Belge ve sigorta bitiş tarihleri</h2>${DT.map(x=>`<label>${x[1]}</label><input type='date' id='d-${x[0]}' value="${d[x[0]]||''}">`).join('')}<div class='msg'>MTV (Ocak ve Temmuz sonu) otomatik hatırlatılır.</div><div class='two'><div><label>Şu anki km</label><input id='p-km' type='number' inputmode='numeric' value="${pf.km||''}"></div><div><label>Sonraki bakım km</label><input id='p-nx' type='number' inputmode='numeric' value="${pf.next||''}"></div></div><div class='acts'><button class='btn' id='ps'>Kaydet</button></div></div>`;
+  kk=pf.kasa||'';chips($('#p-k'),KASA,kk,pk);$('#p-v').oninput=pauto;combo($('#p-v'),()=>Object.keys(MD));plateKb($('#p-p'));pauto();
+  $('#ps').onclick=()=>{const dd={};DT.forEach(x=>{const v=$('#d-'+x[0]).value;if(v)dd[x[0]]=v});pf={name:$('#p-n').value.trim(),veh:$('#p-v').value.trim(),plate:$('#p-p').value.trim().toUpperCase(),year:$('#p-y').value,kasa:kk,km:parseFloat($('#p-km').value)||0,next:parseFloat($('#p-nx').value)||0,d:dd};pedit=false;save();renderProf()};
+ }
+}
+function oldProf(){const el=$("#prof"),has=pf.name||pf.veh||pf.plate;
+ if(has&&!pedit){el.innerHTML=`<div class="card prof"><div><div class="t">${esc(pf.name)}</div><div class="s">${esc(pf.veh)}${pf.veh&&pf.plate?" · ":""}<b>${esc(pf.plate)}</b></div></div><button class="btn g s" id="pe">Düzenle</button></div>`;$("#pe").onclick=()=>{pedit=true;renderProf()}}
+ else{el.innerHTML=`<div class="card"><h2>Kişisel bilgiler</h2><label>İsim</label><input id="p-n" value="${esc(pf.name)}" placeholder="Ad Soyad"><label>Çekici araç</label><input id="p-v" value="${esc(pf.veh)}" placeholder="Marka / model"><label>Çekicinin plakası</label><input id="p-p" value="${esc(pf.plate)}" placeholder="16 ABC 123"><div class="acts"><button class="btn" id="ps">Kaydet</button></div></div>`;
+  $("#ps").onclick=()=>{pf={name:$("#p-n").value.trim(),veh:$("#p-v").value.trim(),plate:$("#p-p").value.trim().toUpperCase()};pedit=false;save();renderProf()}}}
+$("#pl").innerHTML=PLACES.map(p=>`<option value="${p[0]}">`).join("");
+
+function sums(m){const s={inc:0,exp:0,km:0,byG:{},byC:{},byI:{}};
+  m.forEach(r=>{if(r.kind==="gelir"){s.byI[r.cat]=(s.byI[r.cat]||0)+r.amt;s.km+=r.km||0;if(r.pay!=="Veresiye"||r.paid)s.inc+=r.amt}
+  else{s.exp+=r.amt;const g=r.grp||grpOf(r.cat);s.byG[g]=(s.byG[g]||0)+r.amt;(s.byC[g]=s.byC[g]||{})[r.cat]=(s.byC[g][r.cat]||0)+r.amt}});return s}
+function render(){
+  renderProf();
+  $("#ml").textContent=cur.toLocaleDateString("tr-TR",{month:"long",year:"numeric"});
+  const m=db.filter(r=>r.date.slice(0,7)===mkey()),s=sums(m);
+  const owed=db.filter(r=>r.kind==="gelir"&&r.pay==="Veresiye"&&!r.paid).reduce((a,r)=>a+r.amt,0);
+  $("#inc").textContent=tl(s.inc);$("#exp").textContent=tl(s.exp);$("#dbt").textContent=tl(owed);$("#net").textContent=tl(s.inc-s.exp);
+  document.querySelectorAll(".tabs button").forEach(b=>b.classList.toggle("on",b.dataset.t===tab));
+  const v=$("#view");
+  if(tab==="ozet")v.innerHTML=ozet(m,s)+'<button class="btn" id="xp" style="width:100%;margin-bottom:8px">Bu ayı muhasebeci için kopyala (Excel)</button><button class="btn g" id="bkb" style="width:100%">Tarife, yedek ve geri yükleme</button>';
+  else if(tab==="kayit")v.innerHTML=`<div class="card">${m.length?m.slice().sort((a,b)=>b.date.localeCompare(a.date)||b.id-a.id).map(item).join(""):'<div class="empty">Bu ay kayıt yok. Sağ alttaki Ekle ile ilk kaydı gir.</div>'}</div>`;
+  else v.innerHTML=ver();
+  const bb=$("#bkb");if(bb)bb.onclick=()=>{$("#s-open").value=ay.open||"";$("#s-km").value=ay.km||"";$("#bm").textContent="";$("#bk").classList.add("open")};
+}
+function bars(o,cls){const t=Object.values(o).reduce((a,b)=>a+b,0);return Object.entries(o).sort((a,b)=>b[1]-a[1]).map(([k,x])=>`<div class="cat"><span class="n">${esc(k)}</span><span class="b"><i class="${cls}" style="width:${x/t*100}%"></i></span><span class="a">${tl(x)}</span></div>`).join("")}
+function ozet(m,s){
+  const gi=Object.entries(s.byG).sort((a,b)=>b[1]-a[1]);
+  const gh=gi.map(([g,x])=>`<div class="cat"><span class="n"><b>${esc(g)}</b></span><span class="b"><i style="width:${x/s.exp*100}%"></i></span><span class="a"><b>${tl(x)}</b></span></div><div class="sub">${Object.entries(s.byC[g]).sort((a,b)=>b[1]-a[1]).map(([c,y])=>esc(c)+" "+tl(y)).join(" · ")}</div>`).join("");
+  const n=m.filter(r=>r.kind==="gelir").length;
+  return `<div class="card"><h2>Çalışma</h2><div class="kv"><span>Gelir kaydı</span><b>${n}</b></div><div class="kv"><span>Toplam mesafe</span><b>${Math.round(s.km).toLocaleString("tr-TR")} km</b></div><div class="kv"><span>Km başına gelir</span><b>${s.km?tl(s.inc/s.km):"–"}</b></div><div class="kv"><span>Km başına net</span><b>${s.km?tl((s.inc-s.exp)/s.km):"–"}</b></div></div>
+  <div class="card"><h2>Gelir türleri</h2>${bars(s.byI,"g")||'<div class="empty">Bu ay gelir girilmedi.</div>'}</div>
+  <div class="card"><h2>Gider sınıfları</h2>${gh||'<div class="empty">Bu ay gider girilmedi.</div>'}</div>`}
+function item(r){
+  const pend=r.kind==="gelir"&&r.pay==="Veresiye"&&!r.paid;
+  const route=r.from||r.to?`${esc(r.from||"?")} → ${esc(r.to||"?")}${r.km?" · "+r.km+" km":""}`:"";
+  const sub=r.kind==="gider"?(r.grp||grpOf(r.cat)):"";
+  return `<div class="item" data-id="${r.id}"><div><div class="t">${esc(r.cat)}${r.kind==="gelir"&&r.pay?`<span class="tag ${pend?"":"q"}">${pend?"Veresiye":esc(r.pay)}</span>`:""}</div>
+  <div class="s">${dt(r.date)}${sub?" · "+esc(sub):""}${r.cus?" · "+esc(r.cus):""}${r.kind==="gelir"&&r.note?" · "+esc(r.note):""}</div>${route?`<div class="s">${route}</div>`:""}</div>
+  <div class="r"><b class="${r.kind==="gelir"?"in":"out"}">${r.kind==="gelir"?"+":"−"}${tl(r.amt)}</b></div></div>`}
+function ver(){
+  const a=db.filter(r=>r.kind==="gelir"&&r.pay==="Veresiye"&&!r.paid).sort((x,y)=>x.date.localeCompare(y.date));
+  if(!a.length)return '<div class="card"><div class="empty">Tahsil edilmemiş veresiye yok.</div></div>';
+  const by={};a.forEach(r=>{(by[r.cus||"Müşteri belirtilmemiş"]=by[r.cus||"Müşteri belirtilmemiş"]||[]).push(r)});
+  return Object.entries(by).map(([k,rs])=>`<div class="card"><h2>${esc(k)} · ${tl(rs.reduce((s,r)=>s+r.amt,0))}</h2>${rs.map(r=>`<div class="item"><div><div class="t">${tl(r.amt)}</div><div class="s">${dt(r.date)}${r.from||r.to?" · "+esc(r.from||"?")+" → "+esc(r.to||"?"):""}</div></div><div class="r"><button class="btn s" data-paid="${r.id}">Ödendi</button></div></div>`).join("")}</div>`).join("")}
+
+function chips(el,arr,sel,fn){el.innerHTML=arr.map(x=>`<button class="${x===sel?"on":""}">${x}</button>`).join("");el.querySelectorAll("button").forEach(b=>b.onclick=()=>fn(b.textContent))}
+function form(){
+  document.querySelectorAll(".seg button").forEach(b=>b.classList.toggle("on",b.dataset.k===kind));
+  const g=kind==="gider";
+  $("#f-routew").style.display=g?"none":"block";$("#f-payw").style.display=g?"none":"block";$("#f-grpw").style.display=g?"block":"none";$("#f-notew").style.display=g?"none":"block";
+  if(g){chips($("#f-grp"),Object.keys(G),grp,v=>{grp=v;cat="";form()})}
+  const arr=g?G[grp]:INC;if(!arr.includes(cat))cat=arr[0];
+  chips($("#f-cat"),arr,cat,v=>{cat=v;form()});
+  chips($("#f-pay"),PAY,pay,v=>{pay=v;form()});
+}
+function calc(){
+  const a=findP($("#f-from").value),b=findP($("#f-to").value);
+  let k=parseFloat($("#f-km").value)||0;
+  if(a&&b&&!kmEd){k=Math.round(km1(a,b)*1.35);$("#f-km").value=k;$("#kmh").textContent="(tahmini, değiştirebilirsin)"}
+  else if(!kmEd)$("#kmh").textContent="";
+  if(kind==="gelir"&&!amEd&&k>0&&(ay.open||ay.km)){$("#f-amt").value=Math.round((+ay.open||0)+k*(+ay.km||0));$("#amh").textContent="(tarifeden)"}
+  const f=($("#f-fa").value+" "+$("#f-from").value).trim(),t=($("#f-ta").value+" "+$("#f-to").value).trim();
+  $("#maplink").innerHTML=f&&t?`Kesin mesafe için: <a target="_blank" rel="noopener" href="https://maps.apple.com/?saddr=${encodeURIComponent(f+", Bursa")}&daddr=${encodeURIComponent(t+", Bursa")}&dirflg=d">Haritalar’da aç</a> · <a target="_blank" rel="noopener" href="https://www.google.com/maps/dir/?api=1&origin=${encodeURIComponent(f+", Bursa")}&destination=${encodeURIComponent(t+", Bursa")}">Google Maps</a>. Gördüğün km’yi yukarı yazabilirsin.`:"";
+}
+["f-from","f-to","f-fa","f-ta"].forEach(i=>$("#"+i).addEventListener("input",calc));
+$("#f-km").addEventListener("input",()=>{kmEd=true;$("#kmh").textContent="";amEd=false;calc()});
+$("#f-amt").addEventListener("input",()=>{amEd=true;$("#amh").textContent=""});
+function openForm(r){
+  fromRem=false;editId=r?r.id:null;kind=r?r.kind:"gelir";cat=r?r.cat:"";grp=r&&r.kind==="gider"?(r.grp||grpOf(r.cat)):"Araç işletme";pay=r&&r.pay?r.pay:"Nakit";
+  kmEd=!!(r&&r.km);amEd=!!r;
+  $("#f-amt").value=r?r.amt:"";$("#f-cus").value=r&&r.cus||"";$("#f-note").value=r&&r.note||"";$("#f-date").value=r?r.date:today();
+  $("#f-from").value=r&&r.from||"";$("#f-to").value=r&&r.to||"";$("#f-fa").value=r&&r.fa||"";$("#f-ta").value=r&&r.ta||"";$("#f-km").value=r&&r.km||"";
+  $("#kmh").textContent="";$("#amh").textContent="";$("#cx").textContent=r?"Sil":"Vazgeç";
+  form();calc();$("#sh").classList.add("open");
+}
+document.querySelectorAll(".seg button").forEach(b=>b.onclick=()=>{kind=b.dataset.k;cat="";form()});
+$("#add").onclick=()=>openForm();
+$("#cx").onclick=()=>{if(editId&&confirm("Bu kayıt silinsin mi?")){db=db.filter(r=>r.id!==editId);save();render()}$("#sh").classList.remove("open")};
+$("#sv").onclick=()=>{
+  const amt=parseFloat($("#f-amt").value.replace(",","."));
+  if(!(amt>0)){$("#f-amt").focus();return}
+  const g=kind==="gelir";
+  const r={id:editId||Date.now(),kind,cat,amt,date:$("#f-date").value||today(),note:g?$("#f-note").value.trim():"",cus:g?$("#f-cus").value.trim():"",pay:g?pay:"",paid:false,grp:g?"":grp,
+    from:g?$("#f-from").value.trim():"",to:g?$("#f-to").value.trim():"",fa:g?$("#f-fa").value.trim():"",ta:g?$("#f-ta").value.trim():"",km:g?(parseFloat($("#f-km").value)||0):0};
+  if(editId){const o=db.find(x=>x.id===editId);r.paid=!!(o&&o.paid);db=db.map(x=>x.id===editId?r:x)}else db.push(r);
+  const d=new Date(r.date+"T00:00");cur=new Date(d.getFullYear(),d.getMonth(),1);
+  save();$("#sh").classList.remove("open");render();if(fromRem){fromRem=false;pedit=true;renderProf();scrollTo(0,0)}
+};
+$("#view").onclick=e=>{
+  const p=e.target.closest("[data-paid]");
+  if(p){const r=db.find(x=>x.id==p.dataset.paid);if(r){r.paid=true;save();render()}return}
+  const it=e.target.closest(".item[data-id]");if(it)openForm(db.find(x=>x.id==it.dataset.id))};
+document.querySelectorAll(".tabs button").forEach(b=>b.onclick=()=>{tab=b.dataset.t;render()});
+$("#pm").onclick=()=>{cur=new Date(cur.getFullYear(),cur.getMonth()-1,1);render()};
+$("#nm").onclick=()=>{cur=new Date(cur.getFullYear(),cur.getMonth()+1,1);render()};
+$("#bx").onclick=()=>$("#bk").classList.remove("open");
+$("#ss").onclick=()=>{ay={open:parseFloat($("#s-open").value)||0,km:parseFloat($("#s-km").value)||0};save();$("#bm").textContent="Tarife kaydedildi."};
+$("#cp").onclick=async()=>{const t=JSON.stringify({kayit:db,ayar:ay,profil:pf});try{await navigator.clipboard.writeText(t);$("#bm").textContent="Yedek kopyalandı. Notlar uygulamasına yapıştırıp sakla."}catch(e){$("#rs").value=t;$("#rs").select();$("#bm").textContent="Metni elle kopyala ve Notlar’a yapıştır."}};
+$("#rb").onclick=()=>{try{let a=JSON.parse($("#rs").value),t=ay;if(!Array.isArray(a)){t=a.ayar||ay;if(a.profil)pf=a.profil;a=a.kayit}if(!Array.isArray(a))throw 0;if(confirm("Mevcut kayıtların yerine bu yedek yüklensin mi?")){db=a;ay=t;save();render();$("#bm").textContent="Yedek yüklendi."}}catch(e){$("#bm").textContent="Yedek okunamadı. Kopyaladığın metnin tamamını yapıştır."}};
+const RM={muayene:['Resmi','Muayene'],egzoz:['Resmi','Muayene'],trafik:['Resmi','Sigorta'],kasko:['Resmi','Sigorta'],yetki:['Resmi','Vergi-harç'],src:['Resmi','Vergi-harç'],mtv:['Resmi','Vergi-harç'],bakim:['Araç işletme','Bakım-onarım']};
+$('#prof').onclick=e=>{const b=e.target.closest('[data-rn]');if(!b)return;const k=b.dataset.rn;openForm();kind='gider';[grp,cat]=RM[k];fromRem=k!=='mtv';form();$('#f-amt').focus()};
+async function exportMonth(){
+ const m=db.filter(r=>r.date.slice(0,7)===mkey()).sort((a,b)=>a.date.localeCompare(b.date)),s=sums(m);
+ const n=v=>String(v||0).replace('.',','),c=v=>String(v||'').replace(/[\t\n\r]+/g,' ');
+ const L=[['Çekici Defteri',$('#ml').textContent,pf.name||'',pf.plate||'',pf.veh||''].join('\t'),'',['Tarih','Tür','Sınıf','Kategori','Tutar (₺)','Ödeme','Durum','Müşteri','Başlangıç','Varış','Km','Plaka/Not'].join('\t')];
+ m.forEach(r=>{const g=r.kind==='gelir';L.push([dt(r.date),g?'Gelir':'Gider',g?'':(r.grp||grpOf(r.cat)),r.cat,n(r.amt),g?r.pay:'',g&&r.pay==='Veresiye'?(r.paid?'Tahsil edildi':'Tahsil edilmedi'):'',r.cus,[r.fa,r.from].filter(Boolean).join(' '),[r.ta,r.to].filter(Boolean).join(' '),g?n(r.km):'',g?r.note:''].map(c).join('\t'))});
+ L.push('',['Toplam gelir (tahsil edilen)',n(s.inc)].join('\t'),['Toplam gider',n(s.exp)].join('\t'),['Net',n(s.inc-s.exp)].join('\t'));
+ const t=L.join('\n'),b=$('#xp');
+ try{await navigator.clipboard.writeText(t);if(b){b.textContent='Kopyalandı ✓ Excel veya Notlar’a yapıştır';setTimeout(()=>{b.textContent='Bu ayı muhasebeci için kopyala (Excel)'},3000)}}
+ catch(e){$('#rs').value=t;$('#bm').textContent='Tabloyu seçip kopyala.';$('#bk').classList.add('open');$('#rs').select()}
+}
+$('#view').addEventListener('click',e=>{if(e.target.id==='xp')exportMonth()});
+function combo(inp,opts){
+ const dd=document.createElement('div');dd.className='dd';dd.style.display='none';inp.after(dd);
+ inp.setAttribute('inputmode','none');inp.setAttribute('autocomplete','off');
+ const show=()=>{const q=inp.value.trim().toLowerCase(),l=opts().filter(o=>!q||o.toLowerCase().includes(q));dd.innerHTML=`<div class='ddi w' data-w='1'>✎ Listede yok, elle yaz</div>`+l.map(o=>`<div class='ddi' data-v="${esc(o)}">${esc(o)}</div>`).join('');dd.style.display='block'};
+ inp.addEventListener('focus',show);inp.addEventListener('input',show);
+ inp.addEventListener('blur',()=>setTimeout(()=>{dd.style.display='none'},250));
+ dd.addEventListener('mousedown',e=>e.preventDefault());
+ dd.addEventListener('click',e=>{const it=e.target.closest('.ddi');if(!it)return;
+  if(it.dataset.w){inp.setAttribute('inputmode','text');inp.blur();inp.focus();setTimeout(()=>{dd.style.display='none'},0);return}
+  inp.value=it.dataset.v;inp.dispatchEvent(new Event('input',{bubbles:true}));dd.style.display='none';inp.blur()});
+}
+combo($('#f-from'),()=>PLACES.map(p=>p[0]));combo($('#f-to'),()=>PLACES.map(p=>p[0]));
+function plateKb(inp){
+ let mode='';inp.setAttribute('autocapitalize','characters');inp.setAttribute('autocomplete','off');
+ const upd=()=>{const v=inp.value.replace(/\s/g,''),m=v.length<2?'numeric':'text';if(m===mode)return;const had=mode!=='';mode=m;inp.setAttribute('inputmode',m);
+  if(had&&document.activeElement===inp){inp.blur();setTimeout(()=>{inp.focus();const l=inp.value.length;try{inp.setSelectionRange(l,l)}catch(e){}},30)}};
+ inp.addEventListener('input',upd);upd();
+}
+load();render();
+</script>
+</body>
+</html>
